@@ -6,31 +6,67 @@
 
 
 button,.button{flex-direction:column}
+
+
+.output-switch{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}
+.output-switch button{flex:1;min-width:110px;font-size:14px}
+.difference-panel{margin-top:24px;background:white;border:1px solid #dce5df;border-radius:12px;padding:12px 16px;font-size:14px}
+.difference-panel>summary{font-size:16px;font-weight:600}
+.actual-input{max-width:320px;margin:14px 0 20px}
+.difference-panel h3{font-size:15px}
+.difference-value.shortfall{color:#ae362e}
+.difference-value.met{color:#245b40}
+.no-colors .difference-value{color:#243c32}
+.difference-group .tier strong{font-size:20px}
+.difference-value small{color:inherit}
+
+.primary-fields,.segment-fields{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.segments-panel{border:0;padding:0;margin:8px 0 0}
+.segments-panel>summary{list-style:none;width:44px;height:44px;padding:0;display:flex;align-items:center;justify-content:center;font-size:24px}
+.segments-panel>summary::-webkit-details-marker{display:none}
+.segment-row{border-top:1px solid #e0e7e1;padding:12px 0}
+.segment-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.segment-heading strong{font-size:13px}
+.segment-remove{font-size:20px;min-width:44px;padding:0}
+#managerLogin{margin-top:16px}
+#managerLogin>button{margin-top:14px;width:100%}
+.difference-range{grid-column:1/-1;font-size:12px;display:flex;flex-wrap:wrap;gap:4px 10px;padding-top:4px;color:#607467}
+.difference-range .range{font-weight:500}
+
+.fields>label{display:flex;flex-direction:column}.fields>label>input{margin-top:auto;flex-shrink:0}
 </style></head>
 <body>
 <header><div class="brand"><span class="brand-icon" aria-hidden="true">▦</span><strong data-t="title"></strong></div><div class="tools"><div class="lang-wrap"><button id="langButton" aria-expanded="false">🇨🇳 ▾</button><div id="langMenu" class="lang-menu" hidden></div></div><button id="settingsButton" data-t="settings"></button></div></header>
 <main>
 <section id="calculator"><div class="intro"><p class="eyebrow" data-t="factory"></p><h1 data-t="title"></h1><p data-t="subtitle"></p></div>
 <div class="workspace"><section class="panel inputs"><div class="section-head"><h2 data-t="inputs"></h2><button id="reset" class="text-button" data-t="reset"></button></div>
-<div class="fields">
+<div class="fields primary-fields">
 <label><span data-t="sam"></span><small data-t="samUnit"></small><input id="sam" inputmode="decimal" enterkeyhint="next" autocomplete="off" spellcheck="false" aria-describedby="inputError"></label>
-<label><span data-t="people"></span><small data-t="peopleUnit"></small><input id="people" inputmode="decimal" enterkeyhint="next" autocomplete="off" spellcheck="false" aria-describedby="inputError"></label>
-<label><span data-t="hours"></span><small data-t="hoursUnit"></small><input id="hours" inputmode="decimal" enterkeyhint="next" autocomplete="off" spellcheck="false" aria-describedby="inputError"></label>
 <label><span data-t="target"></span><small data-t="targetUnit"></small><input id="target" inputmode="decimal" enterkeyhint="done" autocomplete="off" spellcheck="false" aria-describedby="inputError"></label>
-</div><p id="inputError" class="error" role="status" hidden></p>
+<label><span data-t="hours"></span><small data-t="hoursUnit"></small><input id="hours" inputmode="decimal" enterkeyhint="next" autocomplete="off" spellcheck="false" aria-describedby="inputError"></label>
+<label><span data-t="people"></span><small data-t="peopleUnit"></small><input id="people" inputmode="decimal" enterkeyhint="next" autocomplete="off" spellcheck="false" aria-describedby="inputError"></label>
+</div><details id="segmentsPanel" class="segments-panel"><summary id="segmentsSummary"><span aria-hidden="true">＋</span></summary><div id="segmentRows"></div><button id="addSegment" data-t="addSegment"></button></details><p id="inputError" class="error" role="status" hidden></p>
 <fieldset><legend data-t="days"></legend><div id="days" class="day-options"></div></fieldset>
-<div id="schemeBadge" class="scheme-badge"></div><details><summary data-t="formula"></summary><p data-t="formulaText"></p><p data-t="timeNote"></p></details>
+<div id="schemeBadge" class="scheme-badge"></div><details><summary data-t="formula"></summary><p data-t="formulaText"></p><p data-t="dailyFormula"></p><p data-t="timeNote"></p></details>
 </section>
-<section class="result-panel"><div class="section-head"><div><h2 data-t="results"></h2><p class="muted" data-t="resultHint"></p></div></div><div id="configStatus" class="config-status" role="status"></div><p id="priority" class="notice" data-t="priority"></p><div id="results" aria-live="polite"></div><p class="footnote" data-t="note"></p></section></div>
+<section class="result-panel"><div class="section-head"><div><h2 data-t="results"></h2><p class="muted" data-t="resultHint"></p></div></div><div class="output-switch" role="group" id="outputSwitch"><button id="viewHourly" data-t="viewHourly"></button><button id="viewDaily" data-t="viewDaily"></button></div><div id="configStatus" class="config-status" role="status"></div><p id="priority" class="notice" data-t="priority"></p><div id="results" aria-live="polite"></div><details id="differencePanel" class="difference-panel"><summary data-t="differenceTitle"></summary><p class="muted" data-t="differenceHelp"></p><label class="actual-input"><span data-t="actualTotal"></span><small data-t="actualHint"></small><input id="actualTotal" inputmode="numeric" enterkeyhint="done" autocomplete="off" aria-describedby="actualError"></label><p id="actualError" class="error" role="status" hidden></p><div id="differences" aria-live="polite"></div></details><p class="footnote" data-t="note"></p></section></div>
 </section>
 <section id="settings" hidden><button id="back" class="text-button" data-t="back"></button><h1 data-t="settings"></h1><section class="panel"><h2 data-t="language"></h2><div id="settingsLang" class="language-options"></div><label class="toggle"><span><strong data-t="colors"></strong><small data-t="colorsHint"></small></span><input id="colors" type="checkbox" checked></label></section>
-<section class="panel"><h2 data-t="config"></h2><p id="configMeta"></p><p data-t="configHelp"></p><div class="actions"><button id="download" data-t="download"></button><label class="button primary"><span data-t="upload"></span><input id="upload" type="file" accept=".xlsx" hidden></label></div><p id="importError" class="error" role="alert" hidden></p><div id="preview" hidden><h3 data-t="preview"></h3><div id="previewMeta"></div><div id="previewData" class="preview-data"></div><div class="actions"><button id="apply" class="primary" data-t="apply"></button><button id="cancel" data-t="cancel"></button></div></div><p class="notice" data-t="publishHelp"></p><div class="actions"><button id="restore" data-t="restore"></button><button id="reload" data-t="reload"></button><button id="exportOffline" data-t="exportOffline"></button></div></section><p class="footnote" data-t="storage"></p></section>
+<section id="managerGate" class="panel"><h2 data-t="config"></h2><form id="managerLogin"><label><span data-t="managerPassword"></span><input id="managerPassword" type="password" autocomplete="off" enterkeyhint="done"></label><p id="passwordError" class="error" data-t="passwordError" role="alert" hidden></p><button class="primary" type="submit" data-t="unlockManager"></button></form></section><section id="managerContent" class="panel" hidden><h2 data-t="config"></h2><p id="configMeta"></p><p data-t="configHelp"></p><div class="actions"><button id="download" data-t="download"></button><label class="button primary"><span data-t="upload"></span><input id="upload" type="file" accept=".xlsx" hidden></label></div><p id="importError" class="error" role="alert" hidden></p><div id="preview" hidden><h3 data-t="preview"></h3><div id="previewMeta"></div><div id="previewData" class="preview-data"></div><div class="actions"><button id="apply" class="primary" data-t="apply"></button><button id="cancel" data-t="cancel"></button></div></div><p class="notice" data-t="publishHelp"></p><div class="actions"><button id="restore" data-t="restore"></button><button id="reload" data-t="reload"></button><button id="exportOffline" data-t="exportOffline"></button></div></section><p class="footnote" data-t="storage"></p></section>
 <footer data-t="copyright"></footer>
 </main><script id="bundled-xlsx" type="application/octet-stream">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</script><script id="mode" type="application/json">"online"</script><script>{
 // Exact rational arithmetic. UI rounding is never reused for calculations.
 function rat(value){const s=String(value).replace(',','.');if(!/^\d+(?:\.\d+)?$/.test(s))throw Error('number');const[a,b='']=s.split('.');return[BigInt(a+b),10n**BigInt(b.length)];}
 function cmp(a,b){return a[0]*b[1]<b[0]*a[1]?-1:a[0]*b[1]>b[0]*a[1]?1:0;}
 function hourly(sam,people,target,threshold){const a=rat(people),b=rat(target),c=rat(threshold),d=rat(sam);if(d[0]===0n)throw Error('number');return String((a[0]*b[0]*c[0]*60n*d[1])/(a[1]*b[1]*c[1]*10000n*d[0])+1n);}
+function dailyTarget(hourlyValue,hours){
+ const a=rat(hourlyValue),b=rat(hours),n=a[0]*b[0],d=a[1]*b[1];
+ return String((n+d-1n)/d);
+}
+function targetDifference(actual,total){
+ if(!/^\d+$/.test(String(actual)))throw Error('count');
+ return String(BigInt(actual)-BigInt(total));
+}
 function displayEfficiency(target,threshold){const a=rat(target),b=rat(threshold),n=a[0]*b[0]*10n,den=a[1]*b[1]*100n;const q=(n*2n+den)/(den*2n);return String(q/10n)+'.'+String(q%10n);}
 function contains(value,lo,li,hi,ui){const x=rat(value);return(lo===''||cmp(x,rat(lo))>0||(li&&cmp(x,rat(lo))===0))&&(hi===''||cmp(x,rat(hi))<0||(ui&&cmp(x,rat(hi))===0));}
 function selectRows(rows,sam,day){return rows.filter(r=>r.day===day&&contains(sam,r.slo,r.sli,r.shi,r.sui)).sort((a,b)=>cmp(rat(a.lo),rat(b.lo)));}
@@ -63,6 +99,32 @@ function validate(config){
  return config;
 }
 
+
+// Aggregate time segments exactly: person-hours / total hours is weighted attendance.
+function reduceRat([n,d]){let a=n,b=d;while(b){const r=a%b;a=b;b=r;}return[n/a,d/a];}
+function addRat(a,b){return reduceRat([a[0]*b[1]+b[0]*a[1],a[1]*b[1]]);}
+function mulRat(a,b){return reduceRat([a[0]*b[0],a[1]*b[1]]);}
+function aggregateSegments(segments){
+ if(!segments.length)throw Error('segments');
+ let hours=[0n,1n],personHours=[0n,1n];
+ for(const segment of segments){
+  const h=rat(segment.hours),p=rat(segment.people);
+  if(h[0]<=0n||p[0]<=0n)throw Error('positive');
+  hours=addRat(hours,h);personHours=addRat(personHours,mulRat(h,p));
+ }
+ return{hours,personHours};
+}
+function hourlySegments(sam,segments,target,threshold){
+ const {hours,personHours}=aggregateSegments(segments),s=rat(sam);
+ if(s[0]<=0n)throw Error('positive');
+ const n=mulRat(mulRat(personHours,rat(target)),rat(threshold));
+ const numerator=n[0]*60n*hours[1]*s[1],denominator=n[1]*10000n*hours[0]*s[0];
+ return String(numerator/denominator+1n);
+}
+function dailySegments(hourlyValue,segments){
+ const {hours}=aggregateSegments(segments),n=BigInt(hourlyValue)*hours[0];
+ return String((n+hours[1]-1n)/hours[1]);
+}
 
 
 // Minimal XLSX reader: ZIP + OOXML, no external network or spreadsheet dependencies.
@@ -117,22 +179,46 @@ function configFromSheets(sheets){
 
 
 const DICT={
+ addSegment:['添加时段','Add time segment','បន្ថែមវគ្គពេលវេលា'],
+ removeSegment:['删除时段','Remove time segment','លុបវគ្គពេលវេលា'],
+ segment:['时段','Time segment','វគ្គពេលវេលា'],
+ managerPassword:['管理密码','Management password','ពាក្យសម្ងាត់គ្រប់គ្រង'],
+ unlockManager:['进入方案管理','Open scheme management','ចូលគ្រប់គ្រងគម្រោង'],
+ passwordError:['密码不正确，请重新输入。','Incorrect password. Try again.','ពាក្យសម្ងាត់មិនត្រឹមត្រូវ សូមបញ្ចូលម្តងទៀត។'],
+
+ viewHourly:['每小时产量','Hourly output','ផលិតកម្មក្នុងមួយម៉ោង'],
+ viewDaily:['当天总目标','Daily total target','គោលដៅសរុបប្រចាំថ្ងៃ'],
+ dailyOutput:['当天总目标产量','Daily output target','គោលដៅផលិតកម្មសរុបប្រចាំថ្ងៃ'],
+ dayPieceUnit:['件/天','pieces/day','ដុំ/ថ្ងៃ'],
+ pieces:['件','pieces','ដុំ'],
+ differenceTitle:['目标差异计算','Target difference','គណនាភាពខុសគ្នាពីគោលដៅ'],
+ differenceHelp:['输入当天实际总产量，逐档比较与当天总目标的差异。差异按已向上预留的生产目标计算。','Enter actual daily output to compare it with each daily target, including the upward allowance.','បញ្ចូលផលិតកម្មសរុបជាក់ស្តែងប្រចាំថ្ងៃ ដើម្បីប្រៀបធៀបជាមួយគោលដៅនៃថ្នាក់នីមួយៗ ដែលបានបន្ថែមឡើង។'],
+ actualTotal:['当天实际总产量','Actual daily output','ផលិតកម្មសរុបជាក់ស្តែងប្រចាំថ្ងៃ'],
+ actualHint:['件，允许为0，只输入整数','Pieces; whole numbers including 0','ដុំ បញ្ចូលចំនួនគត់ អាចជា 0'],
+ actualInvalid:['请输入0或正整数，原有合法输入已保留。','Enter 0 or a positive whole number. The previous valid input was retained.','សូមបញ្ចូល 0 ឬចំនួនគត់វិជ្ជមាន។ ទិន្នន័យត្រឹមត្រូវមុនត្រូវបានរក្សាទុក។'],
+ difference:['与实际产量的差异','Difference from actual output','ភាពខុសគ្នាពីផលិតកម្មជាក់ស្តែង'],
+ shortfall:['还差','Still needed','នៅខ្វះ'],
+ surplus:['已超出','Above target','លើសគោលដៅ'],
+ exactTarget:['刚好达到目标','Target met exactly','បានដល់គោលដៅពិតប្រាកដ'],
+ enterActual:['填写实际总产量后显示差异','Enter actual daily output to see the differences','បញ្ចូលផលិតកម្មជាក់ស្តែង ដើម្បីមើលភាពខុសគ្នា'],
+ dailyFormula:['当天总目标＝每小时目标 × 当天工作时间，有小数向上取整；差异＝实际总产量－当天总目标。','Daily target = hourly target × working hours, rounded up. Difference = actual daily output − daily target.','គោលដៅប្រចាំថ្ងៃ = គោលដៅរាល់ម៉ោង × ម៉ោងធ្វើការ រួចបង្គត់ឡើង។ ភាពខុសគ្នា = ផលិតកម្មជាក់ស្តែង − គោលដៅប្រចាំថ្ងៃ។'],
+
  title:['奖金计算器','Bonus Calculator','កម្មវិធីគណនាប្រាក់រង្វាន់'],
- subtitle:['把奖金目标，换算成每小时产量','Turn bonus targets into hourly output','បម្លែងគោលដៅប្រាក់រង្វាន់ទៅជាផលិតកម្មក្នុងមួយម៉ោង'],
+ subtitle:['把奖金目标，换算成生产目标','Turn bonus targets into production targets','បម្លែងគោលដៅប្រាក់រង្វាន់ទៅជាគោលដៅផលិតកម្ម'],
  factory:['鸿英柯 · 车缝工','Hong Ying Ke · Sewing operators','ហុងអ៊ីងខឺ · កម្មករដេរ'],
  inputs:['生产参数','Production inputs','ទិន្នន័យផលិតកម្ម'],
  sam:['SAM','SAM','SAM'],samUnit:['分钟/件','min/piece','នាទី/ដុំ'],
  people:['出勤人数','Attendance','ចំនួនអ្នកធ្វើការ'],peopleUnit:['人，可输入小数','People; decimals allowed','នាក់ អាចបញ្ចូលទសភាគ'],
- hours:['当天工作时间','Working hours today','ម៉ោងធ្វើការថ្ងៃនេះ'],hoursUnit:['小时','hours','ម៉ោង'],
+ hours:['工作时间','Working hours','ម៉ោងធ្វើការ'],hoursUnit:['小时','hours','ម៉ោង'],
  target:['总部目标效率','HQ target efficiency','ប្រសិទ្ធភាពគោលដៅរបស់ក្រុមហ៊ុន'],
  targetUnit:['输入60代表60%','Enter 60 for 60%','បញ្ចូល 60 សម្រាប់ 60%'],
  days:['上线天数','Days since style launch','ថ្ងៃចាប់ពីចាប់ផ្តើមម៉ូដថ្មី'],
  day1:['第1天','Day 1','ថ្ងៃទី 1'],day2:['第2天','Day 2','ថ្ងៃទី 2'],day3:['第3天','Day 3','ថ្ងៃទី 3'],day4:['第4天及以后','Day 4 onward','ចាប់ពីថ្ងៃទី 4'],
  reset:['重置输入','Reset inputs','សម្អាតទិន្នន័យ'],settings:['设置','Settings','ការកំណត់'],
  back:['返回计算器','Back to calculator','ត្រឡប់ទៅការគណនា'],
- results:['奖金与小时产量','Bonus & hourly output','ប្រាក់រង្វាន់ និងផលិតកម្មប្រចាំម៉ោង'],
+ results:['奖金与目标产量','Bonus & output targets','ប្រាក់រង្វាន់ និងគោលដៅផលិតកម្ម'],
  resultHint:['每档产量均严格超过该档起奖门槛','Every hourly target strictly exceeds its entry threshold','គោលដៅផលិតកម្មរាល់ម៉ោងលើសកម្រិតចាប់ផ្តើមនៃថ្នាក់នីមួយៗ'],
- empty:['填写4项生产参数，即可查看各档每小时目标产量。','Enter all 4 inputs to see the hourly targets.','បញ្ចូលទិន្នន័យទាំង 4 ដើម្បីមើលគោលដៅក្នុងមួយម៉ោង។'],
+ empty:['请完整填写生产参数，即可查看各档目标产量。','Complete the production inputs to see the output targets.','សូមបំពេញទិន្នន័យផលិតកម្ម ដើម្បីមើលគោលដៅផលិតកម្ម។'],
  positive:['请输入大于0的有效数字。','Enter a valid number greater than zero.','សូមបញ្ចូលលេខត្រឹមត្រូវដែលធំជាង 0។'],
  invalid:['仅允许数字和一个小数分隔符（. 或 ,），原有输入已保留。','Use digits and one decimal separator (. or ,). Your input was preserved.','ប្រើតែលេខ និងសញ្ញាទសភាគមួយ (. ឬ ,)។ ទិន្នន័យមុនត្រូវបានរក្សាទុក។'],
  limit:['数字过大，无法安全显示，请检查输入。','Value is too large to display safely. Check the inputs.','តម្លៃធំពេក សូមពិនិត្យទិន្នន័យបញ្ចូល។'],
@@ -151,8 +237,8 @@ const DICT={
  simple:['简单款','Simple styles','ម៉ូដសាមញ្ញ'],
  note:['每小时目标产量已向上预留。实际奖金以公司系统及发奖条件核算为准。','Hourly targets include an upward allowance. Actual bonuses depend on the company system and eligibility rules.','គោលដៅរាល់ម៉ោងត្រូវបានបន្ថែមឡើង។ ប្រាក់រង្វាន់ពិតប្រាកដអាស្រ័យលើប្រព័ន្ធក្រុមហ៊ុន និងលក្ខខណ្ឌផ្តល់រង្វាន់។'],
  formula:['计算公式与取整规则','Formula & rounding','រូបមន្ត និងការបង្គត់'],
- formulaText:['理论小时产量＝人数 × 60 ×（总部目标效率÷100）×（档位达成率下限÷100）÷ SAM；目标产量＝理论值向下取整＋1件。','Theoretical hourly output = people × 60 × (HQ efficiency ÷ 100) × (attainment entry threshold ÷ 100) ÷ SAM. Target = floor(theoretical output) + 1 piece.','ផលិតកម្មទ្រឹស្តីរាល់ម៉ោង = ចំនួននាក់ × 60 × (ប្រសិទ្ធភាពគោលដៅ ÷ 100) × (កម្រិតអត្រាសម្រេច ÷ 100) ÷ SAM។ គោលដៅ = បង្គត់ចុះរួចបូក 1 ដុំ។'],
- timeNote:['按当天工时推算总量再除以工时，工时会抵消，因此相同参数下小时目标不随工时改变。','Daily output divided by daily hours cancels the hours term, so hourly targets stay the same when only hours change.','ផលិតកម្មសរុបប្រចាំថ្ងៃចែកនឹងម៉ោងប្រចាំថ្ងៃ ធ្វើឱ្យកត្តាម៉ោងត្រូវកាត់ចេញ ដូច្នេះគោលដៅក្នុងមួយម៉ោងមិនប្រែប្រួលតាមម៉ោងទេ។'],
+ formulaText:['总工时＝各时段工时之和；投入人时＝各时段（工时×人数）之和；加权人数＝投入人时÷总工时。理论小时产量＝加权人数×60×（总部目标效率÷100）×（档位达成率下限÷100）÷SAM。小时目标＝理论值向下取整＋1件。','Total hours = sum of segment hours. Person-hours = sum of (hours × attendance). Weighted attendance = person-hours ÷ total hours. Hourly target = floor(weighted attendance × 60 × HQ efficiency ÷ 100 × attainment threshold ÷ 100 ÷ SAM) + 1.','ម៉ោងសរុប = ផលបូកម៉ោងគ្រប់វគ្គ។ ម៉ោងកម្លាំងពលកម្ម = ផលបូក (ម៉ោង × ចំនួននាក់)។ ចំនួននាក់ថ្លឹងទម្ងន់ = ម៉ោងកម្លាំងពលកម្ម ÷ ម៉ោងសរុប។ គោលដៅរាល់ម៉ោង = បង្គត់ចុះ (ចំនួននាក់ថ្លឹងទម្ងន់ × 60 × ប្រសិទ្ធភាពគោលដៅ ÷ 100 × អត្រាសម្រេច ÷ 100 ÷ SAM) + 1។'],
+ timeNote:['多时段的每小时目标是全天平均目标，按工时加权人数计算；当天总目标按所有时段的总工时计算。','With multiple segments, the hourly target is a daily average using time-weighted attendance. The daily target uses total hours across all segments.','នៅពេលមានច្រើនវគ្គ គោលដៅរាល់ម៉ោងជាមធ្យមប្រចាំថ្ងៃ ដោយប្រើចំនួននាក់ថ្លឹងតាមម៉ោង។ គោលដៅប្រចាំថ្ងៃប្រើម៉ោងសរុបគ្រប់វគ្គ។'],
  language:['语言','Language','ភាសា'],zh:['中文','中文','中文'],en:['English','English','English'],km:['ភាសាខ្មែរ','ភាសាខ្មែរ','ភាសាខ្មែរ'],both:['ខ្មែរ + 中文','ខ្មែរ + 中文','ខ្មែរ + 中文'],
  colors:['颜色提示','Color cues','សញ្ញាពណ៌'],colorsHint:['关闭后仍保留文字和结构区分','Text and structure remain when colors are off','អត្ថបទ និងរចនាសម្ព័ន្ធនៅតែបែងចែកបានពេលបិទពណ៌'],
  config:['奖金方案管理','Bonus scheme configuration','គ្រប់គ្រងគម្រោងប្រាក់រង្វាន់'],
@@ -184,8 +270,10 @@ const storage={get(k){try{return localStorage.getItem('bonus.'+k);}catch{return 
 const bundledBytes=$('bundled-xlsx').textContent.trim(),bundled=configFromSheets(readXlsx(Uint8Array.from(atob(bundledBytes),c=>c.charCodeAt(0)).buffer)),mode=JSON.parse($('mode').textContent);
 const configStorageKey='local:'+location.pathname+':'+mode+':'+bundled.version;
 const pref=storage.get('language');let language=['zh','en','km','both'].includes(pref)?pref:(navigator.language.startsWith('zh')?'zh':navigator.language.startsWith('km')?'km':'en');
+let outputView=storage.get('outputView')==='daily'?'daily':'hourly',actualLastValid='',actualError='';
 let day=1,config=bundled,currentBytes=bundledBytes,source='offline',status='loading',ready=false,pending=null,inputError='';
-const ids=['sam','people','hours','target'],lastValid=Object.fromEntries(ids.map(x=>[x,'']));
+let managerUnlocked=false,segmentCounter=1;
+const ids=['sam','target','hours','people'],lastValid=Object.fromEntries(ids.map(x=>[x,'']));
 function text(key){const a=DICT[key];if(!a)throw Error('missing dictionary '+key);return language==='both'?a[2]+' / '+a[0]:a[language==='zh'?0:language==='en'?1:2];}
 function el(tag,cls){const x=document.createElement(tag);if(cls)x.className=cls;return x;}
 function tr(node,key){node.replaceChildren();if(language==='both'){const a=el('span','bi'),b=el('span','bi secondary');a.textContent=DICT[key][2];b.textContent=DICT[key][0];node.append(a,b);}else node.textContent=text(key);return node;}
@@ -199,6 +287,7 @@ function groupBounds(r){return(r.slo===''?'':(r.sli?'≥':'>')+r.slo)+(r.shi==='
 function render(){
  document.documentElement.lang=language==='both'?'km':language==='zh'?'zh-CN':language;document.title=text('title');
  document.querySelectorAll('[data-t]').forEach(x=>tr(x,x.dataset.t));
+ document.querySelectorAll('[data-aria-t]').forEach(x=>x.setAttribute('aria-label',text(x.dataset.ariaT)));
  $('langButton').textContent=(language==='zh'?'🇨🇳':language==='en'?'🇬🇧':language==='both'?'🇰🇭 🇨🇳':'🇰🇭')+' ▾';$('langButton').setAttribute('aria-label',text('language'));
  languageButtons($('langMenu'));languageButtons($('settingsLang'));
  $('days').replaceChildren();for(let i=1;i<=4;i++){const b=label('day'+i,'button',day===i?'active':'');b.setAttribute('aria-pressed',String(day===i));b.onclick=()=>{day=i;render();};$('days').append(b);}
@@ -206,10 +295,17 @@ function render(){
  $('configMeta').textContent=metadata(config);$('configStatus').replaceChildren(label(status));if(ready){const m=el('span');m.textContent=' · '+metadata(config);$('configStatus').append(m);}
  $('configStatus').classList.toggle('error',!ready&&status!=='loading');$('download').disabled=!ready;$('exportOffline').disabled=!ready;
  $('inputError').hidden=!inputError;if(inputError)tr($('inputError'),inputError);
- renderResults();if(pending)renderPreview();
+ $('outputSwitch').setAttribute('aria-label',text('results'));
+ for(const [id,view]of[['viewHourly','hourly'],['viewDaily','daily']]){$(id).classList.toggle('active',outputView===view);$(id).setAttribute('aria-pressed',String(outputView===view));}
+ $('actualError').hidden=!actualError;if(actualError)tr($('actualError'),actualError);
+ $('segmentsSummary').setAttribute('aria-label',text('addSegment'));
+ $('managerContent').hidden=!managerUnlocked;$('managerGate').hidden=managerUnlocked;
+ updateInputHints();
+ renderResults();if(pending&&managerUnlocked)renderPreview();
 }
 function renderResults(){
- const box=$('results');box.replaceChildren();const all=ids.every(id=>{try{return cmp(rat($(id).value),rat('0'))>0;}catch{return false;}});
+ const box=$('results');box.replaceChildren();const all=validInputs();
+ renderDifferences();
  $('schemeBadge').replaceChildren();
  if($('sam').value){try{const r=selectRows(config.normal,$('sam').value,4)[0];if(r)$('schemeBadge').textContent=text('normal')+' · SAM '+groupBounds(r);}catch{}}
  if(!ready||!all){box.append(label(ready?'empty':status,'div','empty'));return;}
@@ -218,18 +314,61 @@ function renderResults(){
 }
 function resultGroup(rows,kind,normalFirst){
  const section=el('section','result-group '+kind),head=el('div','group-header');head.append(label(kind,'h3'));if(kind==='normal'&&day<4)head.append(label('normalHint','small'));section.append(head);
- const th=el('div','table-head');th.append(label('bonus'),label('output'),label('attainment'));section.append(th);
+ const th=el('div','table-head');th.append(label('bonus'),label(outputView==='daily'?'dailyOutput':'output'),label('attainment'));section.append(th);
  for(const r of rows){
   const row=el('div','tier'),money=el('div'),output=el('div'),rates=el('div');
   const amount=el('strong');amount.textContent=Number(r.bonus).toLocaleString('en-US');money.append(amount,label('moneyUnit','small'));
   const value=el('strong','output-value');
-  try{const n=hourly($('sam').value,$('people').value,$('target').value,r.lo);if(n.length>12)throw Error('limit');value.textContent=BigInt(n).toLocaleString('en-US');}catch{value.textContent='—';output.append(label('limit','small'));}
-  output.prepend(value);output.append(label('pieceUnit','small'));
-  const interval=el('div','range');interval.textContent=range(r);rates.append(interval);const eff=el('div','eff');eff.append(label('actual'));const ev=el('span');ev.textContent=' '+displayEfficiency($('target').value,r.lo)+'%';eff.append(ev);rates.append(eff);
-  if(kind==='supplement'&&r.hi===''&&normalFirst){interval.textContent=range(r)+' – <'+normalFirst.lo+'%';rates.append(label('untilNormal','small'));}
+  try{const n=outputView==='daily'?dailyFor(r):hourlyFor(r);if(n.length>12)throw Error('limit');value.textContent=BigInt(n).toLocaleString('en-US');}catch{value.textContent='—';output.append(label('limit','small'));}
+  output.prepend(value);output.append(label(outputView==='daily'?'dayPieceUnit':'pieceUnit','small'));
+  const interval=el('div','range');interval.textContent=displayRange(r,kind);rates.append(interval);const eff=el('div','eff');eff.append(label('actual'));const ev=el('span');ev.textContent=' '+displayEfficiency($('target').value,r.lo)+'%';eff.append(ev);rates.append(eff);
+  if(kind==='supplement'&&r.hi===''&&normalFirst){interval.textContent=displayRange(r,kind);rates.append(label('untilNormal','small'));}
   row.append(money,output,rates);section.append(row);
  }return section;
 }
+
+function segments(){return[{hours:$('hours').value,people:$('people').value},...[...$('segmentRows').children].map(row=>({hours:row.querySelector('.segment-hours').value,people:row.querySelector('.segment-people').value}))];}
+function validInputs(){try{if(!['sam','target'].every(id=>cmp(rat($(id).value),rat('0'))>0))return false;aggregateSegments(segments());return true;}catch{return false;}}
+function hourlyFor(r){return hourlySegments($('sam').value,segments(),$('target').value,r.lo);}
+function dailyFor(r){return dailySegments(hourlyFor(r),segments());}
+function renderDifferences(){
+ const box=$('differences');box.replaceChildren();
+ if(!ready||!validInputs()){box.append(label(ready?'empty':status,'p','muted'));return;}
+ const hasActual=/^\d+$/.test($('actualTotal').value);
+ if(!hasActual)box.append(label('enterActual','p','muted'));
+ for(const [rows,kind]of [...(day<4?[[selectRows(config.special,$('sam').value,day),'supplement']]:[]),[selectRows(config.normal,$('sam').value,4),'normal']]){
+  const section=el('section','result-group difference-group '+kind);section.append(label(kind,'h3'));
+  const head=el('div','table-head');head.append(label('bonus'),label('dailyOutput'),label('difference'));section.append(head);
+  for(const r of rows){
+   const row=el('div','tier'),money=el('div'),target=el('div'),diff=el('div','difference-value');
+   const bonus=el('strong');bonus.textContent=Number(r.bonus).toLocaleString('en-US');money.append(bonus,label('moneyUnit','small'));
+   try{
+    const total=dailyFor(r);if(total.length>12)throw Error('limit');
+    const value=el('strong');value.textContent=BigInt(total).toLocaleString('en-US');target.append(value,label('dayPieceUnit','small'));
+    if(hasActual){
+     const delta=BigInt(targetDifference($('actualTotal').value,total));
+     diff.append(label(delta<0n?'shortfall':delta>0n?'surplus':'exactTarget','small'));
+     const amount=el('strong');amount.textContent=(delta<0n?-delta:delta).toLocaleString('en-US');diff.append(amount,label('pieces','small'));
+     diff.classList.add(delta<0n?'shortfall':'met');
+    }else diff.textContent='—';
+   }catch{target.append(label('limit','small'));diff.textContent='—';}
+   const rates=el('div','difference-range');rates.append(label('attainment'));const interval=el('span','range');interval.textContent=displayRange(r,kind);rates.append(interval);
+   row.append(money,target,diff,rates);section.append(row);
+  }box.append(section);
+ }
+}
+$('viewHourly').onclick=()=>{outputView='hourly';storage.set('outputView',outputView);render();};
+$('viewDaily').onclick=()=>{outputView='daily';storage.set('outputView',outputView);render();};
+$('differencePanel').addEventListener('toggle',updateInputHints);
+$('actualTotal').addEventListener('focus',()=>requestAnimationFrame(()=>$('actualTotal').select()));
+$('actualTotal').addEventListener('input',()=>{
+ const input=$('actualTotal');
+ if(/^(?:\d+)?$/.test(input.value)&&input.value.length<=30){actualLastValid=input.value;actualError='';input.removeAttribute('aria-invalid');}
+ else{input.value=actualLastValid;actualError='actualInvalid';input.setAttribute('aria-invalid','true');}
+ $('actualError').hidden=!actualError;if(actualError)tr($('actualError'),actualError);renderDifferences();
+});
+$('actualTotal').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('actualTotal').blur();}});
+
 function renderPreview(){
  $('preview').hidden=false;$('previewMeta').textContent=metadata(pending.config);$('previewData').replaceChildren();
  for(const[k,key]of[['normal','normal'],['special','supplement']]){
@@ -248,42 +387,91 @@ async function loadOnline(){
  catch(error){console.error('Configuration load failed:',error.message);ready=false;status='failed';render();}finally{clearTimeout(timer);}
 }
 function offlineExport(){
+ if(!requireManager())return;
  const doc=document.documentElement.cloneNode(true);
  doc.querySelector('#bundled-xlsx').textContent=currentBytes;doc.querySelector('#mode').textContent='"offline"';
- doc.querySelector('#calculator').hidden=false;doc.querySelector('#settings').hidden=true;doc.querySelector('#preview').hidden=true;doc.querySelector('#importError').hidden=true;doc.querySelector('#upload').value='';
- for(const id of ids)doc.querySelector('#'+id).removeAttribute('value');
+ doc.querySelector('#calculator').hidden=false;doc.querySelector('#settings').hidden=true;doc.querySelector('#preview').hidden=true;doc.querySelector('#importError').hidden=true;doc.querySelector('#actualError').hidden=true;doc.querySelector('#differencePanel').removeAttribute('open');doc.querySelector('#upload').value='';
+ doc.querySelector('#managerContent').hidden=true;doc.querySelector('#managerGate').hidden=false;doc.querySelector('#passwordError').hidden=true;
+ doc.querySelector('#segmentRows').replaceChildren();doc.querySelector('#segmentsPanel').removeAttribute('open');
+ for(const id of [...ids,'actualTotal','managerPassword'])doc.querySelector('#'+id).removeAttribute('value');
  download('<!doctype html>\n'+doc.outerHTML,'text/html;charset=utf-8','bonus-calculator-offline.html');
 }
-for(let i=0;i<ids.length;i++){
- const input=$(ids[i]);let firstPointer=false;
+
+function businessInputs(){return[...document.querySelectorAll('.primary-fields input, #segmentRows input')];}
+function updateInputHints(){
+ const visible=businessInputs().filter(x=>x.getClientRects().length);
+ visible.forEach((x,i)=>x.enterKeyHint=i<visible.length-1||$('differencePanel').open?'next':'done');
+}
+function bindBusinessInput(input){
+ let firstPointer=false;lastValid[input.id]='';
  input.addEventListener('focus',()=>{firstPointer=true;requestAnimationFrame(()=>input.select());});
  input.addEventListener('pointerup',e=>{if(firstPointer){e.preventDefault();input.select();firstPointer=false;}});
  input.addEventListener('input',()=>{
-  const s=input.value;if(/^(?:\d+(?:[.,]\d*)?)?$/.test(s)&&s.length<=30){lastValid[input.id]=s;inputError='';input.removeAttribute('aria-invalid');}
+  const value=input.value;
+  if(/^(?:\d+(?:[.,]\d*)?)?$/.test(value)&&value.length<=30){lastValid[input.id]=value;inputError='';input.removeAttribute('aria-invalid');}
   else{input.value=lastValid[input.id];inputError='invalid';}
   $('inputError').hidden=!inputError;if(inputError)tr($('inputError'),inputError);renderResults();
  });
- input.addEventListener('blur',()=>{firstPointer=false;if(input.value){input.value=input.value.replace(/[.,]$/,'');lastValid[input.id]=input.value;try{if(cmp(rat(input.value),rat('0'))<=0){inputError='positive';input.setAttribute('aria-invalid','true');}}catch{inputError='positive';} }$('inputError').hidden=!inputError;if(inputError)tr($('inputError'),inputError);renderResults();});
- input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(i<3)$(ids[i+1]).focus();else input.blur();}});
+ input.addEventListener('blur',()=>{
+  firstPointer=false;if(input.value){input.value=input.value.replace(/[.,]$/,'');lastValid[input.id]=input.value;try{if(cmp(rat(input.value),rat('0'))<=0)throw Error('positive');}catch{inputError='positive';input.setAttribute('aria-invalid','true');}}
+  $('inputError').hidden=!inputError;if(inputError)tr($('inputError'),inputError);renderResults();
+ });
+ input.addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;e.preventDefault();
+  const visible=businessInputs().filter(x=>x.getClientRects().length),index=visible.indexOf(input);
+  if(index<visible.length-1)visible[index+1].focus();else if($('differencePanel').open)$('actualTotal').focus();else input.blur();
+ });
 }
+ids.forEach(id=>bindBusinessInput($(id)));
+function addSegment(){
+ const row=el('div','segment-row');row.dataset.index=String(++segmentCounter);
+ const heading=el('div','segment-heading'),name=label('segment','strong');name.dataset.t='segment';heading.append(name);
+ const number=el('span');number.textContent=row.dataset.index;heading.append(number);
+ const remove=el('button','segment-remove');remove.textContent='×';remove.dataset.ariaT='removeSegment';remove.setAttribute('aria-label',text('removeSegment'));remove.onclick=()=>{for(const input of row.querySelectorAll('input'))delete lastValid[input.id];row.remove();inputError='';$('inputError').hidden=true;updateInputHints();renderResults();};heading.append(remove);
+ const fields=el('div','fields segment-fields');
+ for(const[key,cls,unit]of[['hours','segment-hours','hoursUnit'],['people','segment-people','peopleUnit']]){
+  const field=el('label'),caption=label(key);caption.dataset.t=key;const suffix=label(unit,'small');suffix.dataset.t=unit;
+  const input=el('input',cls);input.id=key+'-'+segmentCounter;input.inputMode='decimal';input.autocomplete='off';input.setAttribute('aria-describedby','inputError');field.append(caption,suffix,input);fields.append(field);bindBusinessInput(input);
+ }
+ row.append(heading,fields);$('segmentRows').append(row);updateInputHints();renderResults();row.querySelector('input').focus();
+}
+$('addSegment').onclick=addSegment;
+$('segmentsPanel').addEventListener('toggle',updateInputHints);
+function displayRange(r,kind){
+ if(kind!=='supplement'||r.hi!=='')return range(r);
+ const normal=selectRows(config.normal,$('sam').value,4)[0];
+ return normal?range(r)+' – '+(normal.li?'<':'≤')+normal.lo+'%':range(r);
+}
+function lockManager(){
+ managerUnlocked=false;pending=null;$('preview').hidden=true;$('managerPassword').value='';$('passwordError').hidden=true;$('managerContent').hidden=true;$('managerGate').hidden=false;
+}
+function requireManager(){if(managerUnlocked)return true;$('managerPassword').focus();return false;}
+$('managerLogin').addEventListener('submit',e=>{
+ e.preventDefault();
+ if($('managerPassword').value==='hongyingke'){
+  managerUnlocked=true;$('managerPassword').value='';$('passwordError').hidden=true;$('managerGate').hidden=true;$('managerContent').hidden=false;
+ }else{$('passwordError').hidden=false;tr($('passwordError'),'passwordError');$('managerPassword').value='';$('managerPassword').focus();}
+});
+
 document.addEventListener('pointerdown',e=>{if(!e.target.closest('input')&&document.activeElement?.matches('input'))document.activeElement.blur();if(!e.target.closest('.lang-wrap')){$('langMenu').hidden=true;$('langButton').setAttribute('aria-expanded','false');}});
 $('langButton').onclick=()=>{$('langMenu').hidden=!$('langMenu').hidden;$('langButton').setAttribute('aria-expanded',String(!$('langMenu').hidden));};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('langMenu').hidden=true;$('langButton').setAttribute('aria-expanded','false');}});
-$('settingsButton').onclick=()=>{$('calculator').hidden=true;$('settings').hidden=false;window.scrollTo(0,0);};
-$('back').onclick=()=>{$('calculator').hidden=false;$('settings').hidden=true;window.scrollTo(0,0);};
-$('reset').onclick=()=>{for(const id of ids){$(id).value='';lastValid[id]='';$(id).removeAttribute('aria-invalid');}day=1;inputError='';render();};
+$('settingsButton').onclick=()=>{lockManager();$('calculator').hidden=true;$('settings').hidden=false;window.scrollTo(0,0);};
+$('back').onclick=()=>{lockManager();$('calculator').hidden=false;$('settings').hidden=true;window.scrollTo(0,0);};
+$('reset').onclick=()=>{for(const id of ids){$(id).value='';lastValid[id]='';$(id).removeAttribute('aria-invalid');}for(const row of $('segmentRows').children)for(const input of row.querySelectorAll('input'))delete lastValid[input.id];$('segmentRows').replaceChildren();$('segmentsPanel').open=false;segmentCounter=1;day=1;inputError='';$('actualTotal').value='';actualLastValid='';actualError='';$('actualTotal').removeAttribute('aria-invalid');$('differencePanel').open=false;render();};
 $('colors').checked=storage.get('colors')!=='off';document.body.classList.toggle('no-colors',!$('colors').checked);
 $('colors').onchange=()=>{storage.set('colors',$('colors').checked?'on':'off');document.body.classList.toggle('no-colors',!$('colors').checked);};
 $('upload').onchange=async()=>{
+ if(!requireManager()){$('upload').value='';return;}
  const file=$('upload').files[0];if(!file)return;pending=null;$('preview').hidden=true;$('importError').hidden=true;
  try{if(file.size>2e6)throw Error('size');const bytes=await file.arrayBuffer(),c=configFromSheets(readXlsx(bytes));pending={config:c,bytes:encode(bytes)};renderPreview();}
  catch{$('importError').hidden=false;tr($('importError'),'importError');}$('upload').value='';
 };
-$('apply').onclick=()=>{if(!pending)return;storage.set(configStorageKey,pending.bytes);activate(pending.config,pending.bytes,'local');pending=null;$('preview').hidden=true;};
+$('apply').onclick=()=>{if(!requireManager()||!pending)return;storage.set(configStorageKey,pending.bytes);activate(pending.config,pending.bytes,'local');pending=null;$('preview').hidden=true;};
 $('cancel').onclick=()=>{pending=null;$('preview').hidden=true;};
-$('restore').onclick=()=>{storage.remove(configStorageKey);activate(bundled,bundledBytes,'offline');};
-$('reload').onclick=()=>{storage.remove(configStorageKey);loadOnline();};
-$('download').onclick=()=>download(decode(currentBytes),'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','bonus-config.xlsx');
+$('restore').onclick=()=>{if(!requireManager())return;storage.remove(configStorageKey);activate(bundled,bundledBytes,'offline');};
+$('reload').onclick=()=>{if(!requireManager())return;storage.remove(configStorageKey);loadOnline();};
+$('download').onclick=()=>{if(requireManager())download(decode(currentBytes),'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','bonus-config.xlsx');};
 $('exportOffline').onclick=offlineExport;
 async function init(){
  const local=storage.get(configStorageKey);if(local){try{activate(configFromSheets(readXlsx(decode(local).buffer)),local,'local');return;}catch{storage.remove(configStorageKey);}}
